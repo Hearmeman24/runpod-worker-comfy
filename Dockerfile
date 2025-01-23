@@ -75,6 +75,8 @@ WORKDIR /comfyui
 # Stage 3: Final image
 FROM base as final
 
+RUN pip install insightface==0.7.3
+
 # Copy models from stage 2 to the final image
 COPY --from=downloader /comfyui/models /comfyui/models
 
