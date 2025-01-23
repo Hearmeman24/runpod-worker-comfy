@@ -106,6 +106,9 @@
             "disabled": true
         }
     },
+    "cnr_custom_nodes": {
+        "comfyui_pulid_flux_ll": "1.0.9"
+    },
     "file_custom_nodes": [
         {
             "filename": "websocket_image_save.py",
