@@ -29,32 +29,12 @@
             "hash": "ce510b97d10e69d5fd0042e115ecd946890d2079",
             "disabled": false
         },
-        "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git": {
-            "hash": "c47b10ca1798b4925ff5a5f07d80c51ca80a837d",
-            "disabled": false
-        },
-        "https://github.com/kijai/ComfyUI-Florence2.git": {
-            "hash": "dffd12506d50f0540b8a7f4b36a05d4fb5fed2de",
-            "disabled": false
-        },
-        "https://github.com/kijai/ComfyUI-SUPIR.git": {
-            "hash": "53fc4f82f139e0875e1f4f3716fbeafa073e4242",
-            "disabled": false
-        },
         "https://github.com/kijai/ComfyUI-KJNodes.git": {
             "hash": "3f141b8f1ca1c832a1c6accd806f2d2f40fd4075",
             "disabled": false
         },
-        "https://github.com/PowerHouseMan/ComfyUI-AdvancedLivePortrait.git": {
-            "hash": "3bba732915e22f18af0d221b9c5c282990181f1b",
-            "disabled": false
-        },
         "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git": {
             "hash": "d8738eee2f6c8c9a17ca42ab71f47ce35ccca3e7",
-            "disabled": false
-        },
-        "https://github.com/Fannovel16/comfyui_controlnet_aux.git": {
-            "hash": "5a049bde9cc117dafc327cded156459289097ea1",
             "disabled": false
         },
         "https://github.com/yolain/ComfyUI-Easy-Use.git": {
@@ -96,14 +76,6 @@
         "https://github.com/ltdrdata/ComfyUI-Manager.git": {
             "hash": "9643aed8f809a76ca4f24365591da0e8d7d9f9b3",
             "disabled": false
-        },
-        "https://github.com/ssitu/ComfyUI_UltimateSDUpscale": {
-            "hash": "ff3fdfeee03de46d4462211cffd165d27155e858",
-            "disabled": false
-        },
-        "https://github.com/Gourieff/comfyui-reactor-node.git": {
-            "hash": "89dba216aaed06bce7177be327b78e0f49c9f800",
-            "disabled": true
         }
     },
     "cnr_custom_nodes": {
