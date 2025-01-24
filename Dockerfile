@@ -10,8 +10,8 @@ ENV PYTHONUNBUFFERED=1
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
-# Install Python, git and other necessary tools
-RUN apt-get update && apt-get install -y \
+# Install Python, git, and other necessary tools in one RUN command to reduce layers
+RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.10 \
     python3-pip \
     git \
@@ -20,65 +20,46 @@ RUN apt-get update && apt-get install -y \
     git-lfs \
     libglib2.0-0 \
     && ln -sf /usr/bin/python3.10 /usr/bin/python \
-    && ln -sf /usr/bin/pip3 /usr/bin/pip
+    && ln -sf /usr/bin/pip3 /usr/bin/pip \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*  # Clean up unnecessary files
 
-# Clean up to reduce image size
-RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
-
-# Install comfy-cli
-RUN pip install comfy-cli
+# Install comfy-cli and other python packages in a single RUN step
+RUN pip install comfy-cli runpod requests
 
 # Install ComfyUI
 RUN /usr/bin/yes | comfy --workspace /comfyui install --cuda-version 11.8 --nvidia --version 0.3.12
 
-# Change working directory to ComfyUI
-WORKDIR /comfyui
-
-# Install runpod
-RUN pip install runpod requests
-
-# Support for the network volume
-ADD src/extra_model_paths.yaml ./
-
-# Go back to the root
-WORKDIR /
-
-# Add scripts
-ADD src/start.sh src/restore_snapshot.sh src/rp_handler.py test_input.json ./
-RUN chmod +x /start.sh /restore_snapshot.sh
-
-# Optionally copy the snapshot file
-ADD *snapshot*.json /
-
-# Restore the snapshot to install custom nodes
-RUN /restore_snapshot.sh
-
-# Start container
-CMD ["/start.sh"]
-
-# Stage 2: Download models
+# Stage 2: Model downloading
 FROM base as downloader
 
-# Download PuLID
-
 WORKDIR /comfyui
-RUN mkdir -p models
-WORKDIR /comfyui/models
-RUN mkdir -p pulid
-RUN git lfs install
-RUN git clone https://huggingface.co/Aitrepreneur/insightface
-RUN wget -O /comfyui/models/pulid/pulid_flux_v0.9.0.safetensors https://huggingface.co/Aitrepreneur/FLX/resolve/main/pulid_flux_v0.9.0.safetensors?download=true
+RUN mkdir -p models/pulid
+WORKDIR /comfyui/models/pulid
 
-# Change working directory to ComfyUI
-WORKDIR /comfyui
+# Download models and the PuLID model
+RUN git lfs install \
+    && git clone https://huggingface.co/Aitrepreneur/insightface \
+    && wget -O pulid_flux_v0.9.0.safetensors https://huggingface.co/Aitrepreneur/FLX/resolve/main/pulid_flux_v0.9.0.safetensors?download=true
 
-# Stage 3: Final image
+# Stage 3: Final image with models
 FROM base as final
 
+# Install specific version of insightface
 RUN pip install insightface==0.7.3
 
-# Copy models from stage 2 to the final image
+# Copy models and configurations from downloader stage to the final image
 COPY --from=downloader /comfyui/models /comfyui/models
+
+# Add scripts and files
+COPY src/extra_model_paths.yaml src/start.sh src/restore_snapshot.sh src/rp_handler.py test_input.json ./
+RUN chmod +x /start.sh /restore_snapshot.sh
+
+# Optionally copy snapshot files
+COPY *snapshot*.json /
+
+# Restore snapshot and install custom nodes
+RUN /restore_snapshot.sh
 
 # Start container
 CMD ["/start.sh"]
