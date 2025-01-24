@@ -13,14 +13,14 @@
             "hash": "2ab739ac1a4cb6af785c8d8420d6c0ee3e993b7b",
             "disabled": false
         },
-        "https://github.com/yolain/ComfyUI-Easy-Use.git": {
-            "hash": "138fb519e7d5577497c8df7f25e7501a4b9b8671",
-            "disabled": false
-        },
         "https://github.com/ltdrdata/ComfyUI-Manager": {
             "hash": "f3efddd849073b04befabdb01dbf5b9febb786f6",
             "disabled": false
         }
+    },
+    "cnr_custom_nodes": {
+        "comfyui-base64-to-image": "1.0.0",
+        "comfyui-easy-use": "1.2.6"
     },
     "file_custom_nodes": [
         {
